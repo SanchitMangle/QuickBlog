@@ -1,52 +1,55 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { assets } from '../assets/assets'
-import { useAppContext } from '../context/AppContext'
+import { motion } from 'framer-motion'
+import { Sparkles, ArrowDown } from 'lucide-react'
 
 const Header = () => {
-
-    const {input,setInput} = useAppContext()
-    const inputRef = useRef()
-
-    const onSubmitHandler = async (e) => {
-        e.preventDefault()
-        setInput(inputRef.current.value)
-    }
-
-    const onClear = () => {
-        setInput('')
-        inputRef.current.value = ''
-    }
-
     return (
-        <div className='mx-8 sm:mx-16 xl:mx-24 relative'>
+        <div className='relative w-full min-h-[60vh] flex flex-col items-center justify-center overflow-hidden px-8 pt-32 md:pt-40'>
 
-            <div className='text-center mt-20 mb-8'>
+            {/* Background Effects */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
-                <div className='inline-flex items-center justify-center gap-4 px-6 py-1.5 mb-4 border border-primary/40 bg-primary/10 rounded-full text-sm text-primary'>
-                    <p>New: AI feature integrated</p>
-                    <img src={assets.star_icon} alt="" className='w-2.5' />
-                </div>
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className='text-center max-w-4xl mx-auto'
+            >
+                {/* Badge */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className='inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/50 border border-border text-primary text-sm font-medium mb-8 backdrop-blur-sm'
+                >
+                    <Sparkles size={14} className="fill-primary" />
+                    <span>AI-Powered Publishing</span>
+                </motion.div>
 
-                <h1 className='text-3xl sm:text-6xl font-semibold sm:leading-16 text-gray-700'>
-                    Your own <span className='text-primary'>blogging</span>
-                  <br />  platform.
+                {/* Title */}
+                <h1 className='text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-text-main mb-8'>
+                    Your thoughts, <br />
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400'>amplified.</span>
                 </h1>
 
-                <p className='my-6 sm:my-8 max-w-2xl m-auto max-sm:text-xs text-gray-500'>This is your space to think out loud, to share what matters, and to write without filters. Whether it’s one word or a thousand, your story starts right here.</p>
+                {/* Subtitle */}
+                <p className='text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed mb-12'>
+                    The modern space to share stories, ideas, and expertise.
+                    Built for writers who value aesthetics, speed, and clean design.
+                </p>
 
-                <form onSubmit={onSubmitHandler} className='flex justify-between max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-white rounded overflow-hidden'>
-                    <input ref={inputRef} className='w-full pl-4 outline-none' type="text" placeholder='Search for blog' required />
-                    <button className='bg-primary text-white px-8 py-2 m-1.5 rounded hover:scale-105 transition-all cuesor-pointer' type="submit">Search</button>
-                </form>
+                {/* Action - Scroll Down Indicator */}
+                <motion.div
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                    className='text-text-muted/50'
+                >
+                    <ArrowDown size={24} className="mx-auto" />
+                </motion.div>
 
-            </div>
-
-            <div className='text-center'>
-             {input &&  <button onClick={onClear} className='border font-light text-xspy-1 px-3 rounded-sm shadow-custom-sm cursor-pointer '>Clear Search</button>}
-            </div>
-
-            <img src={assets.gradientBackground} alt="" className='absolute -top-50 -z-1 opacity-50' />
-
+            </motion.div>
         </div>
     )
 }
