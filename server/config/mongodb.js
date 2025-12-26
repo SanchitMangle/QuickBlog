@@ -10,6 +10,11 @@ const connectDB = async () => {
         return;
     }
 
+    if (!process.env.MONGODB_URI) {
+        console.error('Error: MONGODB_URI is not defined in environment variables.');
+        return;
+    }
+
     try {
         const db = await mongoose.connect(`${process.env.MONGODB_URI}/blog-app`);
 
@@ -17,7 +22,7 @@ const connectDB = async () => {
 
         console.log('DB CONNECTED');
     } catch (error) {
-        console.log(error);
+        console.error('MongoDB Connection Error:', error);
     }
 }
 export default connectDB;
