@@ -24,6 +24,10 @@ export const register = async (req, res) => {
             password: hashedPassword
         });
 
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not defined");
+        }
+
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
         res.status(201).json({
@@ -33,8 +37,8 @@ export const register = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Server error" });
+        console.error("Registration Error:", error);
+        res.status(500).json({ success: false, message: error.message || "Server error" });
     }
 };
 
